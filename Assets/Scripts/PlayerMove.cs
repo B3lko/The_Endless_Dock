@@ -17,6 +17,7 @@ public class PlayerMove : MonoBehaviour{
     [SerializeField] private float gravity;
     [SerializeField] private float jumpForce;
     [SerializeField] private GameObject Model;
+    [SerializeField] private GameObject gameController;
     private float speedTween = 0.25f;
     private float fallSpeed;
     private float speed = 0;
@@ -140,7 +141,8 @@ public class PlayerMove : MonoBehaviour{
             animator.SetBool("isColliding",true);
             isPause = !isPause;
             transform.DOMoveZ(transform.position.z - 3, 0.5f);
-            Debug.Log("Choque");
+            transform.DOMoveY(-0.35f, 0.5f);
+            gameController.GetComponent<GameController>().Lost();
         }
     }
 
