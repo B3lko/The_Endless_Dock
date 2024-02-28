@@ -44,6 +44,12 @@ public class PlayerMove : MonoBehaviour{
         animator.enabled = !state;
     }
 
+    public void Restart(){
+        isPause = false;
+        animator.SetBool("isColliding",false);
+        //animator.enabled = !state;
+    }
+
     void Update(){
         if(!isPause){
             //move = Vector3.zero;
@@ -140,7 +146,7 @@ public class PlayerMove : MonoBehaviour{
         if(hit.collider.gameObject.tag == "Obstacle"){
             animator.SetBool("isColliding",true);
             isPause = !isPause;
-            transform.DOMoveZ(transform.position.z - 3, 0.5f);
+            transform.DOMoveZ(transform.position.z - 13, 0.5f);
             transform.DOMoveY(-0.35f, 0.5f);
             gameController.GetComponent<GameController>().Lost();
         }

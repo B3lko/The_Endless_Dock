@@ -13,9 +13,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject Left;
     [SerializeField] private GameObject Middle;
     [SerializeField] private GameObject Right;
-    [SerializeField] private GameObject Box;
-    [SerializeField] private GameObject Canyon;
-    [SerializeField] private GameObject Barrel;
+    [SerializeField] private GameObject obstacle_barrel;
+    [SerializeField] private GameObject obstacle_cannon;
+    [SerializeField] private GameObject obstacle_red_barrel;
     [SerializeField] private GameObject Sombrilla;
     [SerializeField] private GameObject Barriles;
     [SerializeField] private GameObject Fish;
@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject btnResume;
     [SerializeField] private GameObject btnMenu;
     [SerializeField] private GameObject btnMenu2;
+    [SerializeField] private GameObject btnRestart;
+    [SerializeField] private GameObject btnRestart2;
     [SerializeField] private GameObject Pause;
     [SerializeField] private GameObject Sea;
     [SerializeField] private GameObject Island1;
@@ -191,9 +193,9 @@ public class GameController : MonoBehaviour
                     isLarge.Add(false);
                     int rand = Random.Range(0, 6);
                     switch(rand){
-                        case 0: randObjects.Add(Box); break;
-                        case 1: randObjects.Add(Canyon); break;
-                        case 2: randObjects.Add(Barrel); break;
+                        case 0: randObjects.Add(obstacle_barrel); break;
+                        case 1: randObjects.Add(obstacle_cannon); break;
+                        case 2: randObjects.Add(obstacle_red_barrel); break;
                         case 3: randObjects.Add(Barriles); isLarge[j] = true; break;
                         case 4: randObjects.Add(Sombrilla); isLarge[j] = true; break;
                         case 5: randObjects.Add(Fish); isLarge[j] = true; break;
@@ -203,10 +205,15 @@ public class GameController : MonoBehaviour
 
                 if(isLarge[0] && isLarge[1] && isLarge[2]){
                     switch(Random.Range(0, 3)){
-                        case 0: randObjects[Random.Range(3, 6)] = Box; break;
-                        case 1: randObjects[Random.Range(3, 6)] = Canyon; break;
-                        case 2: randObjects[Random.Range(3, 6)] = Barrel; break;
+                        case 0: randObjects[((i + 1) * (Random.Range(0, 3) + 1)) - 1] = obstacle_barrel; break;
+                        case 1: randObjects[((i + 1) * (Random.Range(0, 3) + 1)) - 1] = obstacle_cannon; break;
+                        case 2: randObjects[((i + 1) * (Random.Range(0, 3) + 1)) - 1] = obstacle_red_barrel; break;
                     }
+                }
+
+
+                for(int p = 0; p < 3; p++){
+                    Debug.Log(  ((p + 1) * (Random.Range(0, 3) + 1)) - 1  );
                 }
 
             }
@@ -285,6 +292,32 @@ public class GameController : MonoBehaviour
                 SceneManager.LoadScene("MainMenu");
             }
 
+            if(btnRestart.GetComponent<PressBtn>().isPressed){
+                btnRestart.GetComponent<PressBtn>().isPressed = false;
+                ResetGame();
+            }
+
+            if(btnRestart2.GetComponent<PressBtn>().isPressed){
+                btnRestart2.GetComponent<PressBtn>().isPressed = false;
+                ResetGame();
+            }
+
         }
+    }
+
+    void ResetGame(){
+        SceneManager.LoadScene("World");
+
+        /*score = 0;
+        GameSpeed = 350;
+
+        btnPause.transform.DOScale(Vector3.one,0.5f);
+        camera.transform.DOLocalRotate(new Vector3(20,0,0), 0.5f, RotateMode.Fast);
+        lost.transform.DOScale(Vector3.zero,0.5f).OnComplete(() => {
+            lost.SetActive(false);
+            isPause = false;
+            Player.GetComponent<PlayerMove>().Restart();
+        });*/
+
     }
 }

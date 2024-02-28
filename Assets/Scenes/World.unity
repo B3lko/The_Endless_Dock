@@ -480,7 +480,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.5
+  m_Height: 1.25
   m_Radius: 0.25
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -1995,9 +1995,9 @@ MonoBehaviour:
   Left: {fileID: 667742896}
   Middle: {fileID: 570972110}
   Right: {fileID: 1172298069}
-  Box: {fileID: 3837125433143377547, guid: d51ff2188494a8e4587a4ba203ba03fe, type: 3}
-  Canyon: {fileID: 2251894982024255073, guid: 2f6bffba9cee7dd47bfbd80cc1d09c19, type: 3}
-  Barrel: {fileID: 2001747202422597095, guid: d791c2d20444822428f350f6f31e21de, type: 3}
+  obstacle_barrel: {fileID: 3837125433143377547, guid: d51ff2188494a8e4587a4ba203ba03fe, type: 3}
+  obstacle_cannon: {fileID: 2251894982024255073, guid: 2f6bffba9cee7dd47bfbd80cc1d09c19, type: 3}
+  obstacle_red_barrel: {fileID: 2001747202422597095, guid: d791c2d20444822428f350f6f31e21de, type: 3}
   Sombrilla: {fileID: 1803548298330887608, guid: 5316185752285e249ad501a19a358e94, type: 3}
   Barriles: {fileID: 2509669451952392392, guid: 4ab2a9173bca1d748b8bef2716372344, type: 3}
   Fish: {fileID: 1235074053639390799, guid: 05dbecc260cd296438b1ed2ad17dd416, type: 3}
@@ -2007,6 +2007,8 @@ MonoBehaviour:
   btnResume: {fileID: 662201062}
   btnMenu: {fileID: 10973662}
   btnMenu2: {fileID: 226479336}
+  btnRestart: {fileID: 1815976811}
+  btnRestart2: {fileID: 1527038801}
   Pause: {fileID: 846552171}
   Sea: {fileID: 271100265997461555, guid: 928b7ab55e4c640469989d2fad85c7d7, type: 3}
   Island1: {fileID: 19128258992812583, guid: f707191a539c0ae4989d856bea091177, type: 3}
@@ -2208,6 +2210,7 @@ GameObject:
   - component: {fileID: 1527038805}
   - component: {fileID: 1527038804}
   - component: {fileID: 1527038803}
+  - component: {fileID: 1527038806}
   m_Layer: 5
   m_Name: Button Restart
   m_TagString: Untagged
@@ -2278,7 +2281,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1527038804}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1527038806}
+        m_TargetAssemblyTypeName: PressBtn, Assembly-CSharp
+        m_MethodName: SetPressed
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1527038804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2317,6 +2332,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1527038801}
   m_CullTransparentMesh: 1
+--- !u!114 &1527038806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527038801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07e935cb1cb40c4f83e6d1fab917c4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPressed: 0
 --- !u!1 &1583175414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2437,6 +2465,7 @@ GameObject:
   - component: {fileID: 1815976815}
   - component: {fileID: 1815976814}
   - component: {fileID: 1815976813}
+  - component: {fileID: 1815976816}
   m_Layer: 5
   m_Name: Button Restart
   m_TagString: Untagged
@@ -2507,7 +2536,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1815976814}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1815976816}
+        m_TargetAssemblyTypeName: PressBtn, Assembly-CSharp
+        m_MethodName: SetPressed
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1815976814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2546,6 +2587,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815976811}
   m_CullTransparentMesh: 1
+--- !u!114 &1815976816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815976811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07e935cb1cb40c4f83e6d1fab917c4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPressed: 0
 --- !u!1 &1969946557
 GameObject:
   m_ObjectHideFlags: 0
