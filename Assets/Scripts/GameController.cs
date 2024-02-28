@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject Obs;
     [SerializeField] private GameObject lost;
     [SerializeField] private GameObject camera;
-    private float first = 100;
+    private float obstacle_pos_y = -0.3f;
     private float sep = 20f;
     private float cord;
     private float cord2;
@@ -208,7 +208,6 @@ public class GameController : MonoBehaviour
 
                 }
                 if(isLarge[0] && isLarge[1] && isLarge[2]){
-                    Debug.Log("Mamita querida");
                     switch(i){
                         case 0: randObjects[Random.Range(0, 3)] = obstacle_barrel; break;
                         case 1: randObjects[Random.Range(3, 6)] = obstacle_cannon; break;
@@ -218,36 +217,29 @@ public class GameController : MonoBehaviour
 
                 for(int h = 0; h < 3; h++){
                         isLarge[h] = false;
-                    }
-
-
-
-                //for(int p = 0; p < 3; p++){
-               //     Debug.Log(  ((p + 1) * (Random.Range(0, 3) + 1)) - 1  );
-               // }
-
+                }
             }
             
             if(k == 0){
                 Obstaculos.Add(Instantiate(Aux, new Vector3(0, 0, 50f), transform.rotation));
             }
             else{
-                Obstaculos.Add(Instantiate(Aux, new Vector3(0, 0, Obstaculos[k - 1].transform.position.z + 50), transform.rotation));
+                Obstaculos.Add(Instantiate(Aux, new Vector3(0, 0, Obstaculos[k - 1].transform.position.z + 75), transform.rotation));
             }
 
             cord2 = Obstaculos[k].transform.position.z;
 
-            OOBBSS.Add(Instantiate(randObjects[0], new Vector3(Left.transform.position.x - 1,  -0.25f, cord2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[1], new Vector3(Middle.transform.position.x, -0.25f, cord2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[2], new Vector3(Right.transform.position.x + 1, -0.25f, cord2), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[0], new Vector3(Left.transform.position.x - 1, obstacle_pos_y, cord2), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[1], new Vector3(Middle.transform.position.x, obstacle_pos_y, cord2), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[2], new Vector3(Right.transform.position.x + 1, obstacle_pos_y, cord2), transform.rotation));
 
-            OOBBSS.Add(Instantiate(randObjects[3], new Vector3(Left.transform.position.x - 1,  -0.25f, cord2 + sep), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[4], new Vector3(Middle.transform.position.x, -0.25f, cord2 + sep), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[5], new Vector3(Right.transform.position.x + 1, -0.25f, cord2 + sep), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[3], new Vector3(Left.transform.position.x - 1, obstacle_pos_y, cord2 + sep), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[4], new Vector3(Middle.transform.position.x, obstacle_pos_y, cord2 + sep), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[5], new Vector3(Right.transform.position.x + 1, obstacle_pos_y, cord2 + sep), transform.rotation));
 
-            OOBBSS.Add(Instantiate(randObjects[6], new Vector3(Left.transform.position.x - 1,  -0.25f, cord2 + sep * 2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[7], new Vector3(Middle.transform.position.x, -0.25f , cord2 + sep * 2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[8], new Vector3(Right.transform.position.x + 1, -0.25f, cord2 + sep * 2), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[6], new Vector3(Left.transform.position.x - 1, obstacle_pos_y, cord2 + sep * 2), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[7], new Vector3(Middle.transform.position.x, obstacle_pos_y, cord2 + sep * 2), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[8], new Vector3(Right.transform.position.x + 1, obstacle_pos_y, cord2 + sep * 2), transform.rotation));
 
 
             for(int n = 0; n < 9; n++){

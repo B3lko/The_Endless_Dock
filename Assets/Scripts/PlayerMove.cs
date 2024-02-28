@@ -4,19 +4,18 @@ using UnityEngine;
 using DG.Tweening;
 
 public class PlayerMove : MonoBehaviour{
-    //[SerializeField] private float speed;
-    private CharacterController Controller;
+    private CharacterController controller;
     private Animator animator;
     float horizontal;
     float vertical;
     Vector3 move = Vector3.zero;
     private int index = 0; //0 Middle 1 Left 2 Right
-    [SerializeField] private Transform Left;
-    [SerializeField] private Transform Middle;
-    [SerializeField] private Transform Right;
+    [SerializeField] private Transform left;
+    [SerializeField] private Transform middle;
+    [SerializeField] private Transform right;
     [SerializeField] private float gravity;
     [SerializeField] private float jumpForce;
-    [SerializeField] private GameObject Model;
+    [SerializeField] private GameObject model;
     [SerializeField] private GameObject gameController;
     private float speedTween = 0.25f;
     private float fallSpeed;
@@ -25,9 +24,10 @@ public class PlayerMove : MonoBehaviour{
 
     public void SetSpeed(float spd){
         speed = spd;
+        //fallSpeed += spd;
     }
     void Awake(){  
-        Controller = GetComponent<CharacterController>(); //Componente CharacterController
+        controller = GetComponent<CharacterController>(); //Componente CharacterController
         animator = GetComponent<Animator>(); //Componente animator
     }
 
@@ -35,7 +35,7 @@ public class PlayerMove : MonoBehaviour{
         if(!isPause){
             //move = Vector3.zero;
             move = new Vector3(0, move.y, speed * Time.deltaTime);
-            Controller.Move(move * Time.deltaTime);
+            controller.Move(move * Time.deltaTime);
         }
     }
 
@@ -61,22 +61,22 @@ public class PlayerMove : MonoBehaviour{
     }
 
     private void SetGravity(){
-        if(Controller.isGrounded){
+        if(controller.isGrounded){
             animator.SetBool("isJumping",false);
-            fallSpeed = -gravity * Time.deltaTime;
+            fallSpeed = -gravity * Time.deltaTime * speed * 30;
         }
         else{
-            fallSpeed -= gravity * Time.deltaTime;
+            fallSpeed -= gravity * Time.deltaTime * speed * 30;
         }
         move.y = fallSpeed;
     }
 
     private void SetJump(){
-        if(Controller.isGrounded && Input.GetKeyDown(KeyCode.W)){
+        if(controller.isGrounded && Input.GetKeyDown(KeyCode.W)){
             fallSpeed = jumpForce;
             move = Vector3.zero;
             move.y = jumpForce;
-            Controller.Move(move * Time.deltaTime);
+            controller.Move(move * Time.deltaTime);
             animator.SetBool("isJumping",true);
         }
     }
@@ -87,25 +87,25 @@ public class PlayerMove : MonoBehaviour{
 
             if(index == 2){
                 animator.SetBool("GoingLeft",true);
-                Model.transform.DOMoveX(Middle.position.x, speedTween).OnComplete(() => {
+                model.transform.DOMoveX(middle.position.x, speedTween).OnComplete(() => {
                     animator.SetBool("GoingLeft",false);
                 });
-                float newCenterX = Middle.position.x; // Puedes ajustar este valor según tus necesidades
-                Vector3 newCenter = Controller.center;
+                float newCenterX = middle.position.x; // Puedes ajustar este valor según tus necesidades
+                Vector3 newCenter = controller.center;
                 newCenter.x = newCenterX;
-                Controller.center = newCenter;
+                controller.center = newCenter;
                 index = 0;
                 return;
             }
             if(index == 0){
                 animator.SetBool("GoingLeft",true);
-                Model.transform.DOMoveX(Left.position.x, speedTween).OnComplete(() => {
+                model.transform.DOMoveX(left.position.x, speedTween).OnComplete(() => {
                     animator.SetBool("GoingLeft",false);
                 });
-                float newCenterX = Left.position.x; // Puedes ajustar este valor según tus necesidades
-                Vector3 newCenter = Controller.center;
+                float newCenterX = left.position.x; // Puedes ajustar este valor según tus necesidades
+                Vector3 newCenter = controller.center;
                 newCenter.x = newCenterX;
-                Controller.center = newCenter;
+                controller.center = newCenter;
                 index = 1;
                 return;
             }
@@ -115,25 +115,25 @@ public class PlayerMove : MonoBehaviour{
         if(Input.GetKeyDown(KeyCode.D)){
             if(index == 1){
                 animator.SetBool("GoingRight",true);
-                Model.transform.DOMoveX(Middle.position.x, speedTween).OnComplete(() => {
+                model.transform.DOMoveX(middle.position.x, speedTween).OnComplete(() => {
                     animator.SetBool("GoingRight",false);
                 });
-                float newCenterX = Middle.position.x; // Puedes ajustar este valor según tus necesidades
-                Vector3 newCenter = Controller.center;
+                float newCenterX = middle.position.x; // Puedes ajustar este valor según tus necesidades
+                Vector3 newCenter = controller.center;
                 newCenter.x = newCenterX;
-                Controller.center = newCenter;
+                controller.center = newCenter;
                 index = 0;
                 return;
             }
             if(index == 0){
                 animator.SetBool("GoingRight",true);
-                Model.transform.DOMoveX(Right.position.x, speedTween).OnComplete(() => {
+                model.transform.DOMoveX(right.position.x, speedTween).OnComplete(() => {
                     animator.SetBool("GoingRight",false);
                 });
-                float newCenterX = Right.position.x; // Puedes ajustar este valor según tus necesidades
-                Vector3 newCenter = Controller.center;
+                float newCenterX = right.position.x; // Puedes ajustar este valor según tus necesidades
+                Vector3 newCenter = controller.center;
                 newCenter.x = newCenterX;
-                Controller.center = newCenter;
+                controller.center = newCenter;
                 index = 2;
                 return;
             }

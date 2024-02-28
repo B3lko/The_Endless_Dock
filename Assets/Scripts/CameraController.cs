@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour{
-    [SerializeField] private Transform Player;
+    [SerializeField] private Transform player;
+    float posY = 5f;
+    float posZ = -6f;
     void Update(){
-        transform.position = new Vector3(Player.position.x, 5f, Player.position.z - 6f);   
+        transform.position = new Vector3(player.position.x, posY, player.position.z + posZ);   
     }
 }
