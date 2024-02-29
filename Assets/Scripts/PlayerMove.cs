@@ -63,10 +63,10 @@ public class PlayerMove : MonoBehaviour{
     private void SetGravity(){
         if(controller.isGrounded){
             animator.SetBool("isJumping",false);
-            fallSpeed = -gravity * Time.deltaTime * speed * 30;
+            fallSpeed = -gravity * Time.deltaTime;// * speed * 30;
         }
         else{
-            fallSpeed -= gravity * Time.deltaTime * speed * 30;
+            fallSpeed -= gravity * Time.deltaTime;// * speed * 30;
         }
         move.y = fallSpeed;
     }

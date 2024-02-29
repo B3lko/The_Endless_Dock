@@ -12,7 +12,12 @@ public class BoatController : MonoBehaviour{
     void RestartTween(){
         transform.position = new Vector3(-80, 0, -30);
         transform.DOMoveX(60,30f).OnComplete(() => {
-            RestartTween();
+            if(Random.Range(0, 2) == 0){
+                RestartTween();
+            }
+            else{
+                RestartTween2();
+            }
         });
     }
 
@@ -23,7 +28,12 @@ public class BoatController : MonoBehaviour{
                 transform.DOMoveZ(90,10f).OnComplete(() => {
                     transform.DOLocalRotate(new Vector3(0,90,0), 5, RotateMode.Fast).OnComplete(() => {
                         transform.DOMoveX(100,5).OnComplete(() => {
-                            RestartTween();
+                            if(Random.Range(0, 2) == 0){
+                                RestartTween();
+                            }
+                            else{
+                                RestartTween2();
+                            }
                         });
                     });
                 });

@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 using UnityEngine.SceneManagement;
 
 public class ButtonsManager : MonoBehaviour{
-    [SerializeField] private GameObject GameManager;
+    [SerializeField] private GameObject gameManager;
     public void Exit(){
         Application.Quit();
     }
@@ -14,7 +15,12 @@ public class ButtonsManager : MonoBehaviour{
     }
 
     public void Credits(){
-        GameManager.GetComponent<MainMenuController>().Credits();
+        gameManager.GetComponent<MainMenuController>().Credits();
+    }
+
+    public void Home(){
+        DOTween.Kill(gameManager);
+        gameManager.GetComponent<MainMenuController>().FinishCredits();
     }
 
 }
