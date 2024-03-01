@@ -14,7 +14,9 @@ public class PlayerMove : MonoBehaviour{
     [SerializeField] private Transform middle;
     [SerializeField] private Transform right;
     [SerializeField] private float gravity;
+    [SerializeField] private float gravityInitial;
     [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpForceInitial;
     [SerializeField] private GameObject model;
     [SerializeField] private GameObject gameController;
     private float speedTween = 0.25f;
@@ -22,13 +24,24 @@ public class PlayerMove : MonoBehaviour{
     private float speed = 0;
     bool isPause = false;
 
+
     public void SetSpeed(float spd){
         speed = spd;
-        //fallSpeed += spd;
+
+ //float jumpFactor = 0.01f * spd; // Controla la rapidez del salto
+  // float gravityFactor = 0.01f * spd; // Controla la rapidez de la gravedad
+
+   // gravity = gravityInitial * gravityFactor;
+   // jumpForce = jumpForceInitial * jumpFactor;
+
+        //gravity = (gravityInitial + spd * 0.01f);
+        //jumpForce = (jumpForceInitial + spd * 0.01f);
     }
     void Awake(){  
         controller = GetComponent<CharacterController>(); //Componente CharacterController
         animator = GetComponent<Animator>(); //Componente animator
+        jumpForceInitial = jumpForce;
+        gravityInitial = gravity;
     }
 
     void FixedUpdate() {
@@ -55,6 +68,7 @@ public class PlayerMove : MonoBehaviour{
             //move = Vector3.zero;
             Inputs();
             SetGravity();
+            SetDown();
             SetJump();
             //Controller.Move(move * Time.deltaTime);
         }
@@ -70,12 +84,17 @@ public class PlayerMove : MonoBehaviour{
         }
         move.y = fallSpeed;
     }
+    private void SetDown(){
+        if(!controller.isGrounded && Input.GetKeyDown(KeyCode.S)){
+            fallSpeed = -gravity * Time.deltaTime * 2;
+        }
+    }
 
     private void SetJump(){
         if(controller.isGrounded && Input.GetKeyDown(KeyCode.W)){
             fallSpeed = jumpForce;
             move = Vector3.zero;
-            move.y = jumpForce;
+            move.y = fallSpeed;
             controller.Move(move * Time.deltaTime);
             animator.SetBool("isJumping",true);
         }
@@ -87,13 +106,26 @@ public class PlayerMove : MonoBehaviour{
 
             if(index == 2){
                 animator.SetBool("GoingLeft",true);
-                model.transform.DOMoveX(middle.position.x, speedTween).OnComplete(() => {
+                /*model.transform.DOMoveX(middle.position.x, speedTween).OnComplete(() => {
+                    animator.SetBool("GoingLeft",false);
+
+                    float newCenterX = middle.position.x;
+                    Vector3 newCenter = controller.center;
+                    newCenter.x = newCenterX;
+                    controller.center = newCenter;
+                });
+
+                Vector3 targetPosition = new Vector3(middle.position.x, model.transform.position.y, model.transform.position.z);*/
+
+                model.transform.DOMoveX(middle.position.x, speedTween).OnUpdate(() => {
+    // Se ejecuta en cada fotograma durante la animación
+    // Ajusta el centro del controlador para que coincida con la posición actual del modelo
+                    Vector3 newCenter = controller.center;
+                    newCenter.x = model.transform.position.x;
+                    controller.center = newCenter;
+                }).OnComplete(() => {
                     animator.SetBool("GoingLeft",false);
                 });
-                float newCenterX = middle.position.x; // Puedes ajustar este valor según tus necesidades
-                Vector3 newCenter = controller.center;
-                newCenter.x = newCenterX;
-                controller.center = newCenter;
                 index = 0;
                 return;
             }

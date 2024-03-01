@@ -35,10 +35,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject lost;
     [SerializeField] private GameObject camera;
     private float obstacle_pos_y = -0.3f;
-    private float sep = 20f;
+    private float sep = 50f;
     private float cord;
     private float cord2;
-    private float GameSpeed = 350f;
+    private float GameSpeed = 500f;
     private float SpeedAUment = 0.025f;
     private int score = 0;
     int zzz = 32;
@@ -169,12 +169,12 @@ public class GameController : MonoBehaviour
     }
     
     void UpdateObstacles(){
-        if(Obstaculos[0].transform.position.z + 80 < Player.transform.position.z){
+        if(Obstaculos[0].transform.position.z + 150 < Player.transform.position.z){
             GameObject aux = Obstaculos[0];
             for(int i = 0; i < Obstaculos.Count - 1; i++){
                 Obstaculos[i] = Obstaculos[i + 1]; 
             }
-            aux.transform.position = new Vector3(0, 0, Obstaculos[Obstaculos.Count -1].transform.position.z + 50);
+            aux.transform.position = new Vector3(0, 0, Obstaculos[Obstaculos.Count -1].transform.position.z + 150);
             Obstaculos[Obstaculos.Count -1] = aux;
         }
     }
@@ -209,7 +209,9 @@ public class GameController : MonoBehaviour
                 }
                 if(isLarge[0] && isLarge[1] && isLarge[2]){
                     switch(i){
-                        case 0: randObjects[Random.Range(0, 3)] = obstacle_barrel; break;
+                        case 0: 
+                            randObjects[Random.Range(0, 3)] = obstacle_barrel; 
+                            break;
                         case 1: randObjects[Random.Range(3, 6)] = obstacle_cannon; break;
                         case 2: randObjects[Random.Range(6, 9)] = obstacle_red_barrel; break;
                     }
@@ -224,7 +226,7 @@ public class GameController : MonoBehaviour
                 Obstaculos.Add(Instantiate(Aux, new Vector3(0, 0, 50f), transform.rotation));
             }
             else{
-                Obstaculos.Add(Instantiate(Aux, new Vector3(0, 0, Obstaculos[k - 1].transform.position.z + 75), transform.rotation));
+                Obstaculos.Add(Instantiate(Aux, new Vector3(0, 0, Obstaculos[k - 1].transform.position.z + 150), transform.rotation));
             }
 
             cord2 = Obstaculos[k].transform.position.z;
@@ -233,13 +235,15 @@ public class GameController : MonoBehaviour
             OOBBSS.Add(Instantiate(randObjects[1], new Vector3(Middle.transform.position.x, obstacle_pos_y, cord2), transform.rotation));
             OOBBSS.Add(Instantiate(randObjects[2], new Vector3(Right.transform.position.x + 1, obstacle_pos_y, cord2), transform.rotation));
 
-            OOBBSS.Add(Instantiate(randObjects[3], new Vector3(Left.transform.position.x - 1, obstacle_pos_y, cord2 + sep), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[4], new Vector3(Middle.transform.position.x, obstacle_pos_y, cord2 + sep), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[5], new Vector3(Right.transform.position.x + 1, obstacle_pos_y, cord2 + sep), transform.rotation));
+            int randMiddle = Random.Range(-10, 11);
+            OOBBSS.Add(Instantiate(randObjects[3], new Vector3(Left.transform.position.x - 1, obstacle_pos_y, cord2 + sep + randMiddle), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[4], new Vector3(Middle.transform.position.x, obstacle_pos_y, cord2 + sep + randMiddle), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[5], new Vector3(Right.transform.position.x + 1, obstacle_pos_y, cord2 + sep + randMiddle), transform.rotation));
 
-            OOBBSS.Add(Instantiate(randObjects[6], new Vector3(Left.transform.position.x - 1, obstacle_pos_y, cord2 + sep * 2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[7], new Vector3(Middle.transform.position.x, obstacle_pos_y, cord2 + sep * 2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[8], new Vector3(Right.transform.position.x + 1, obstacle_pos_y, cord2 + sep * 2), transform.rotation));
+            int randForward = Random.Range(-10, 11);
+            OOBBSS.Add(Instantiate(randObjects[6], new Vector3(Left.transform.position.x - 1, obstacle_pos_y, cord2 + (sep + randForward) * 2), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[7], new Vector3(Middle.transform.position.x, obstacle_pos_y, cord2 + (sep + randForward) * 2), transform.rotation));
+            OOBBSS.Add(Instantiate(randObjects[8], new Vector3(Right.transform.position.x + 1, obstacle_pos_y, cord2 + (sep + randForward) * 2), transform.rotation));
 
 
             for(int n = 0; n < 9; n++){
