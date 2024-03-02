@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject Obs;
     [SerializeField] private GameObject lost;
     [SerializeField] private GameObject camera;
+    [SerializeField] private GameObject coin;
     private float obstacle_pos_y = -0.3f;
     private float sep = 50f;
     private float cord;
@@ -51,6 +52,7 @@ public class GameController : MonoBehaviour
     List<GameObject> Obstaculos = new List<GameObject>();
     List<GameObject> OOBBSS = new List<GameObject>();
     List<GameObject> randObjects = new List<GameObject>();
+    List<GameObject> coins = new List<GameObject>();
     List<bool> isLarge = new List<bool>();
 
     GameObject Aux;
@@ -59,6 +61,7 @@ public class GameController : MonoBehaviour
         GenerateSeas();
         GenerateIsland();
         GenerateObstaculos();
+        GenerateCoins();
         cord = Player.transform.position.z;
     }
     
@@ -130,6 +133,14 @@ public class GameController : MonoBehaviour
         }
     }
 
+    void GenerateCoins(){
+        coins.Clear();
+        coins.Add( Instantiate(coin, new Vector3(0,1,Player.transform.position.z + 50 + Random.Range(-10, 11)), coin.transform.rotation) );
+        for(int i = 1; i < Random.Range(5, 11); i++){
+            coins.Add( Instantiate(coin, new Vector3(0,1,coins[i-1].transform.position.z + 5), coin.transform.rotation) );
+        }
+    }
+
     void UpdateDocks(){
         if(Docks[0].transform.position.z + 20 < Player.transform.position.z){
             GameObject aux = Docks[0];
@@ -138,6 +149,18 @@ public class GameController : MonoBehaviour
             }
             aux.transform.position = new Vector3(0, -3, Docks[Docks.Count -1].transform.position.z + zzz);
             Docks[Docks.Count -1] = aux;
+        }
+    }
+
+    void UpdateCoins(){
+        if(coins[coins.Count - 1].transform.position.z + 20 < Player.transform.position.z){
+            GenerateCoins();
+            //GameObject aux = Docks[0];
+            //for(int i = 0; i < Docks.Count - 1; i++){
+            //    Docks[i] = Docks[i + 1]; 
+            //}
+            //aux.transform.position = new Vector3(0, -3, Docks[Docks.Count -1].transform.position.z + zzz);
+            //Docks[Docks.Count -1] = aux;
         }
     }
 
@@ -261,6 +284,7 @@ public class GameController : MonoBehaviour
             UpdateSeas();
             UpdateIslands();
             UpdateObstacles();
+            UpdateCoins();
 
             Player.GetComponent<PlayerMove>().SetSpeed(GameSpeed);
             score = Mathf.RoundToInt(GameSpeed/10) - 35;

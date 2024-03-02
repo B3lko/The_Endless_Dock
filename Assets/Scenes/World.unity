@@ -2465,6 +2465,7 @@ MonoBehaviour:
   Obs: {fileID: 1645652802}
   lost: {fileID: 1583175414}
   camera: {fileID: 963194225}
+  coin: {fileID: 1498403948531744, guid: fa2c57d3f28a5e6419393e8bc3eeb32a, type: 3}
 --- !u!4 &1354558012
 Transform:
   m_ObjectHideFlags: 0

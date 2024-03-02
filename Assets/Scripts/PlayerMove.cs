@@ -82,11 +82,11 @@ public class PlayerMove : MonoBehaviour{
         else{
             fallSpeed -= gravity * Time.deltaTime;// * speed * 30;
         }
-        move.y = fallSpeed;
+        move.y = fallSpeed * speed * 0.002f;
     }
     private void SetDown(){
         if(!controller.isGrounded && Input.GetKeyDown(KeyCode.S)){
-            fallSpeed = -gravity * Time.deltaTime * 2;
+            fallSpeed = -gravity * Time.deltaTime * 4;
         }
     }
 
@@ -94,7 +94,7 @@ public class PlayerMove : MonoBehaviour{
         if(controller.isGrounded && Input.GetKeyDown(KeyCode.W)){
             fallSpeed = jumpForce;
             move = Vector3.zero;
-            move.y = fallSpeed;
+            move.y = fallSpeed * speed * 0.002f;
             controller.Move(move * Time.deltaTime);
             animator.SetBool("isJumping",true);
         }
@@ -106,20 +106,7 @@ public class PlayerMove : MonoBehaviour{
 
             if(index == 2){
                 animator.SetBool("GoingLeft",true);
-                /*model.transform.DOMoveX(middle.position.x, speedTween).OnComplete(() => {
-                    animator.SetBool("GoingLeft",false);
-
-                    float newCenterX = middle.position.x;
-                    Vector3 newCenter = controller.center;
-                    newCenter.x = newCenterX;
-                    controller.center = newCenter;
-                });
-
-                Vector3 targetPosition = new Vector3(middle.position.x, model.transform.position.y, model.transform.position.z);*/
-
                 model.transform.DOMoveX(middle.position.x, speedTween).OnUpdate(() => {
-    // Se ejecuta en cada fotograma durante la animación
-    // Ajusta el centro del controlador para que coincida con la posición actual del modelo
                     Vector3 newCenter = controller.center;
                     newCenter.x = model.transform.position.x;
                     controller.center = newCenter;
@@ -131,47 +118,44 @@ public class PlayerMove : MonoBehaviour{
             }
             if(index == 0){
                 animator.SetBool("GoingLeft",true);
-                model.transform.DOMoveX(left.position.x, speedTween).OnComplete(() => {
+                model.transform.DOMoveX(left.position.x, speedTween).OnUpdate(() => {
+                    Vector3 newCenter = controller.center;
+                    newCenter.x = model.transform.position.x;
+                    controller.center = newCenter;
+                }).OnComplete(() => {
                     animator.SetBool("GoingLeft",false);
                 });
-                float newCenterX = left.position.x; // Puedes ajustar este valor según tus necesidades
-                Vector3 newCenter = controller.center;
-                newCenter.x = newCenterX;
-                controller.center = newCenter;
                 index = 1;
                 return;
             }
-
         }
 
         if(Input.GetKeyDown(KeyCode.D)){
             if(index == 1){
                 animator.SetBool("GoingRight",true);
-                model.transform.DOMoveX(middle.position.x, speedTween).OnComplete(() => {
+                model.transform.DOMoveX(middle.position.x, speedTween).OnUpdate(() => {
+                    Vector3 newCenter = controller.center;
+                    newCenter.x = model.transform.position.x;
+                    controller.center = newCenter;
+                }).OnComplete(() => {
                     animator.SetBool("GoingRight",false);
                 });
-                float newCenterX = middle.position.x; // Puedes ajustar este valor según tus necesidades
-                Vector3 newCenter = controller.center;
-                newCenter.x = newCenterX;
-                controller.center = newCenter;
                 index = 0;
                 return;
             }
             if(index == 0){
                 animator.SetBool("GoingRight",true);
-                model.transform.DOMoveX(right.position.x, speedTween).OnComplete(() => {
+                model.transform.DOMoveX(right.position.x, speedTween).OnUpdate(() => {
+                    Vector3 newCenter = controller.center;
+                    newCenter.x = model.transform.position.x;
+                    controller.center = newCenter;
+                }).OnComplete(() => {
                     animator.SetBool("GoingRight",false);
                 });
-                float newCenterX = right.position.x; // Puedes ajustar este valor según tus necesidades
-                Vector3 newCenter = controller.center;
-                newCenter.x = newCenterX;
-                controller.center = newCenter;
                 index = 2;
                 return;
             }
-
         }
-
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit){
@@ -183,5 +167,4 @@ public class PlayerMove : MonoBehaviour{
             gameController.GetComponent<GameController>().Lost();
         }
     }
-
 }
