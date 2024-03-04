@@ -82,11 +82,11 @@ public class PlayerMove : MonoBehaviour{
         else{
             fallSpeed -= gravity * Time.deltaTime;// * speed * 30;
         }
-        move.y = fallSpeed * speed * 0.002f;
+        move.y = fallSpeed;
     }
     private void SetDown(){
         if(!controller.isGrounded && Input.GetKeyDown(KeyCode.S)){
-            fallSpeed = -gravity * Time.deltaTime * 4;
+            fallSpeed = -gravity;
         }
     }
 
@@ -159,12 +159,20 @@ public class PlayerMove : MonoBehaviour{
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit){
-        if(hit.collider.gameObject.tag == "Obstacle"){
+        if(hit.collider.gameObject.tag == "Obstacle" || hit.collider.gameObject.tag == "ObstacleLarge"){
             animator.SetBool("isColliding",true);
             isPause = !isPause;
             transform.DOMoveZ(transform.position.z - 3, 0.5f);
             transform.DOMoveY(-0.35f, 0.5f);
             gameController.GetComponent<GameController>().Lost();
+        }
+        
+    }
+    void OnTriggerEnter(Collider other) {
+        if(other.GetComponent<Collider>().gameObject.tag == "Coin"){
+            gameController.GetComponent<GameController>().SetTextCoin();
+            other.GetComponent<CoinController>().SetState();
+            gameController.GetComponent<GameController>().EmitParticle(new Vector3(other.transform.position.x,other.transform.position.y,other.transform.position.z));
         }
     }
 }
