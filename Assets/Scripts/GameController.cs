@@ -35,28 +35,31 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject camera;
     [SerializeField] private GameObject coin;
     [SerializeField] private GameObject coinsText;
+    [SerializeField] private GameObject uiPressToStart;
+    [SerializeField] private GameObject uiCoins;
+    [SerializeField] private GameObject uiScore;
+    [SerializeField] private AudioSource music;
     public ParticleSystem particles_coin;
     private float coinsGrab = 0;
     private float obstacle_pos_y = -0.3f;
-    private float sep = 50f;
-    private float cord;
+    private float obstacles_sep = 50f;
     private float cord2;
     private float gameSpeed = 500f;
     private float speed_increase = 0.025f;
     private int score = 0;
-    int zzz = 32;
-    bool isPause = false;
+    int posZ_dock = 32;
+    bool isPause = true;
+    bool isStart = true;
     List<GameObject> docks = new List<GameObject>();
     List<GameObject> seas = new List<GameObject>();
     List<GameObject> bloks = new List<GameObject>();
     List<GameObject> leftIsland = new List<GameObject>();
     List<GameObject> rightIsland = new List<GameObject>();
     List<GameObject> obstacles = new List<GameObject>();
-    List<GameObject> OOBBSS = new List<GameObject>();
+    List<GameObject> obstacles_aux_container = new List<GameObject>();
     List<GameObject> randObjects = new List<GameObject>();
     List<GameObject> coins = new List<GameObject>();
     List<bool> isLarge = new List<bool>();
-    GameObject Aux;
 
     void Start(){
         GenerateDocks();
@@ -64,12 +67,10 @@ public class GameController : MonoBehaviour
         GenerateIsland();
         GenerateObstaculos();
         GenerateCoins();
-        cord = player.transform.position.z;
     }
     public void SetTextCoin(){
         coinsGrab += 1;
         coinsText.GetComponent<TextMeshProUGUI>().text = coinsGrab.ToString();
-
     }
     void GenerateIsland(){
 
@@ -161,7 +162,7 @@ public class GameController : MonoBehaviour
             for(int i = 0; i < docks.Count - 1; i++){
                 docks[i] = docks[i + 1]; 
             }
-            aux.transform.position = new Vector3(0, -3, docks[docks.Count -1].transform.position.z + zzz);
+            aux.transform.position = new Vector3(0, -3, docks[docks.Count -1].transform.position.z + posZ_dock);
             docks[docks.Count -1] = aux;
         }
     }
@@ -224,13 +225,9 @@ public class GameController : MonoBehaviour
             isLarge.Add(false);
         }
 
-        GameObject Aux = new GameObject();
-
         for(int k = 0; k < 10; k++){
 
-            Aux = new GameObject();
-
-            List<GameObject> OOBBSS = new List<GameObject>();
+            List<GameObject> obstacles_aux_container = new List<GameObject>();
             List<GameObject> randObjects = new List<GameObject>();
 
             for(int i = 0; i < 3; i++){
@@ -258,36 +255,36 @@ public class GameController : MonoBehaviour
                 }
 
                 for(int h = 0; h < 3; h++){
-                        isLarge[h] = false;
+                    isLarge[h] = false;
                 }
             }
             
             if(k == 0){
-                obstacles.Add(Instantiate(Aux, new Vector3(0, 0, 50f), transform.rotation));
+                obstacles.Add(Instantiate(new GameObject(), new Vector3(0, 0, 50f), transform.rotation));
             }
             else{
-                obstacles.Add(Instantiate(Aux, new Vector3(0, 0, obstacles[k - 1].transform.position.z + 150), transform.rotation));
+                obstacles.Add(Instantiate(new GameObject(), new Vector3(0, 0, obstacles[k - 1].transform.position.z + 150), transform.rotation));
             }
 
             cord2 = obstacles[k].transform.position.z;
 
-            OOBBSS.Add(Instantiate(randObjects[0], new Vector3(left.transform.position.x - 1, obstacle_pos_y, cord2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[1], new Vector3(middle.transform.position.x, obstacle_pos_y, cord2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[2], new Vector3(right.transform.position.x + 1, obstacle_pos_y, cord2), transform.rotation));
+            obstacles_aux_container.Add(Instantiate(randObjects[0], new Vector3(left.transform.position.x - 1, obstacle_pos_y, cord2), transform.rotation));
+            obstacles_aux_container.Add(Instantiate(randObjects[1], new Vector3(middle.transform.position.x, obstacle_pos_y, cord2), transform.rotation));
+            obstacles_aux_container.Add(Instantiate(randObjects[2], new Vector3(right.transform.position.x + 1, obstacle_pos_y, cord2), transform.rotation));
 
             int randMiddle = Random.Range(-10, 11);
-            OOBBSS.Add(Instantiate(randObjects[3], new Vector3(left.transform.position.x - 1, obstacle_pos_y, cord2 + sep + randMiddle), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[4], new Vector3(middle.transform.position.x, obstacle_pos_y, cord2 + sep + randMiddle), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[5], new Vector3(right.transform.position.x + 1, obstacle_pos_y, cord2 + sep + randMiddle), transform.rotation));
+            obstacles_aux_container.Add(Instantiate(randObjects[3], new Vector3(left.transform.position.x - 1, obstacle_pos_y, cord2 + obstacles_sep + randMiddle), transform.rotation));
+            obstacles_aux_container.Add(Instantiate(randObjects[4], new Vector3(middle.transform.position.x, obstacle_pos_y, cord2 + obstacles_sep + randMiddle), transform.rotation));
+            obstacles_aux_container.Add(Instantiate(randObjects[5], new Vector3(right.transform.position.x + 1, obstacle_pos_y, cord2 + obstacles_sep + randMiddle), transform.rotation));
 
             int randForward = Random.Range(-10, 11);
-            OOBBSS.Add(Instantiate(randObjects[6], new Vector3(left.transform.position.x - 1, obstacle_pos_y, cord2 + (sep + randForward) * 2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[7], new Vector3(middle.transform.position.x, obstacle_pos_y, cord2 + (sep + randForward) * 2), transform.rotation));
-            OOBBSS.Add(Instantiate(randObjects[8], new Vector3(right.transform.position.x + 1, obstacle_pos_y, cord2 + (sep + randForward) * 2), transform.rotation));
+            obstacles_aux_container.Add(Instantiate(randObjects[6], new Vector3(left.transform.position.x - 1, obstacle_pos_y, cord2 + (obstacles_sep + randForward) * 2), transform.rotation));
+            obstacles_aux_container.Add(Instantiate(randObjects[7], new Vector3(middle.transform.position.x, obstacle_pos_y, cord2 + (obstacles_sep + randForward) * 2), transform.rotation));
+            obstacles_aux_container.Add(Instantiate(randObjects[8], new Vector3(right.transform.position.x + 1, obstacle_pos_y, cord2 + (obstacles_sep + randForward) * 2), transform.rotation));
 
 
             for(int n = 0; n < 9; n++){
-                OOBBSS[n].transform.SetParent(obstacles[k].transform);
+                obstacles_aux_container[n].transform.SetParent(obstacles[k].transform);
             }
 
         }
@@ -314,6 +311,19 @@ public class GameController : MonoBehaviour
                 pause.SetActive(true);
                 pause.transform.DOScale(1,0.5f);
                 isPause = true;
+                player.GetComponent<PlayerMove>().SetPause(isPause);
+            }
+        }
+        else if(isStart){
+            if(Input.GetKeyDown(KeyCode.Space)){
+                player.GetComponent<PlayerMove>().StopDancing();
+                isStart = !isStart;
+                isPause = !isPause;
+                music.DOFade(1, 0.5f);
+                uiPressToStart.transform.DOScale(0,0.5f);
+                btnPause.transform.DOScale(1,0.5f);
+                uiCoins.transform.DOScale(1,0.5f);
+                uiScore.transform.DOScale(1,0.5f);
                 player.GetComponent<PlayerMove>().SetPause(isPause);
             }
         }

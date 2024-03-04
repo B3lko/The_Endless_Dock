@@ -6,7 +6,6 @@ using DG.Tweening;
 public class CoinController : MonoBehaviour{
 
     void Start(){
-        
         Spin();
     }
     
@@ -30,14 +29,4 @@ public class CoinController : MonoBehaviour{
             transform.position = new Vector3(transform.position.x,3,transform.position.z);
         }
     }
-    
-
-    
-
-    /*void OnTriggerEnter(Collider other) {
-        if(other.GetComponent<Collider>().gameObject.tag == "Player"){
-            gameController.GetComponent<GameController>().SetTextCoin();
-            gameObject.SetActive(false);
-        }
-    }*/
 }

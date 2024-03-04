@@ -22,31 +22,21 @@ public class PlayerMove : MonoBehaviour{
     private float speedTween = 0.25f;
     private float fallSpeed;
     private float speed = 0;
-    bool isPause = false;
-
+    bool isPause = true;
 
     public void SetSpeed(float spd){
         speed = spd;
-
- //float jumpFactor = 0.01f * spd; // Controla la rapidez del salto
-  // float gravityFactor = 0.01f * spd; // Controla la rapidez de la gravedad
-
-   // gravity = gravityInitial * gravityFactor;
-   // jumpForce = jumpForceInitial * jumpFactor;
-
-        //gravity = (gravityInitial + spd * 0.01f);
-        //jumpForce = (jumpForceInitial + spd * 0.01f);
     }
     void Awake(){  
-        controller = GetComponent<CharacterController>(); //Componente CharacterController
-        animator = GetComponent<Animator>(); //Componente animator
+        controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
         jumpForceInitial = jumpForce;
         gravityInitial = gravity;
+        transform.rotation = Quaternion.Euler(0,180,0);
     }
 
-    void FixedUpdate() {
+    void FixedUpdate(){
         if(!isPause){
-            //move = Vector3.zero;
             move = new Vector3(0, move.y, speed * Time.deltaTime);
             controller.Move(move * Time.deltaTime);
         }
@@ -57,36 +47,28 @@ public class PlayerMove : MonoBehaviour{
         animator.enabled = !state;
     }
 
-    public void Restart(){
-        isPause = false;
-        animator.SetBool("isColliding",false);
-        //animator.enabled = !state;
-    }
-
     void Update(){
         if(!isPause){
-            //move = Vector3.zero;
             Inputs();
             SetGravity();
             SetDown();
             SetJump();
-            //Controller.Move(move * Time.deltaTime);
         }
     }
 
     private void SetGravity(){
         if(controller.isGrounded){
             animator.SetBool("isJumping",false);
-            fallSpeed = -gravity * Time.deltaTime;// * speed * 30;
+            fallSpeed = -gravity * Time.deltaTime;
         }
         else{
-            fallSpeed -= gravity * Time.deltaTime;// * speed * 30;
+            fallSpeed -= gravity * Time.deltaTime;
         }
         move.y = fallSpeed;
     }
     private void SetDown(){
         if(!controller.isGrounded && Input.GetKeyDown(KeyCode.S)){
-            fallSpeed = -gravity;
+            fallSpeed = -gravity * Time.deltaTime * 30;
         }
     }
 
@@ -94,10 +76,15 @@ public class PlayerMove : MonoBehaviour{
         if(controller.isGrounded && Input.GetKeyDown(KeyCode.W)){
             fallSpeed = jumpForce;
             move = Vector3.zero;
-            move.y = fallSpeed * speed * 0.002f;
+            move.y = fallSpeed;
             controller.Move(move * Time.deltaTime);
             animator.SetBool("isJumping",true);
         }
+    }
+
+    public void StopDancing(){
+        animator.SetBool("isDancing",false);
+        transform.DOLocalRotate(new Vector3(0,0,0),0.0f , RotateMode.Fast);
     }
 
     void Inputs(){
