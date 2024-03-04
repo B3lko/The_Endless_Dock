@@ -38,8 +38,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject uiPressToStart;
     [SerializeField] private GameObject uiCoins;
     [SerializeField] private GameObject uiScore;
+    [SerializeField] private GameObject ship_1;
+    [SerializeField] private GameObject ship_2;
     [SerializeField] private AudioSource music;
     public ParticleSystem particles_coin;
+    private GameObject ship = null;
     private float coinsGrab = 0;
     private float obstacle_pos_y = -0.3f;
     private float obstacles_sep = 50f;
@@ -67,10 +70,44 @@ public class GameController : MonoBehaviour
         GenerateIsland();
         GenerateObstaculos();
         GenerateCoins();
+        GenerateShip();
+        ship_1.transform.localScale = new Vector3(5,5,5);
+        ship_2.transform.localScale = new Vector3(5,5,5);
     }
     public void SetTextCoin(){
         coinsGrab += 1;
         coinsText.GetComponent<TextMeshProUGUI>().text = coinsGrab.ToString();
+    }
+
+    void UpdateShip(){
+        if(ship.transform.position.z < player.transform.position.z -20){
+            Destroy(ship);
+            GenerateShip();
+        }
+    }
+
+    void GenerateShip(){
+
+        GameObject typeShip = null;
+        int posShipX = 0;
+
+        if(Random.Range(0, 2) == 0){
+            posShipX = -25;
+        }
+        else{
+            posShipX = 25;
+        }
+
+        if(Random.Range(0, 2) == 0){
+            typeShip = ship_1;
+        }
+        else{
+            typeShip = ship_2;
+        }
+
+        ship = Instantiate(typeShip, new Vector3(posShipX,-4,player.transform.position.z + 2000), transform.rotation);
+        ship.transform.rotation = Quaternion.Euler(0,180,0);
+        ship.transform.DOMoveZ(player.transform.position.z,15f);
     }
     void GenerateIsland(){
 
@@ -299,9 +336,10 @@ public class GameController : MonoBehaviour
             UpdateIslands();
             UpdateObstacles();
             UpdateCoins();
+            UpdateShip();
 
             player.GetComponent<PlayerMove>().SetSpeed(gameSpeed);
-            score = Mathf.RoundToInt(gameSpeed/10) - 35;
+            score = Mathf.RoundToInt(gameSpeed/10) - 50;
             scoreText.GetComponent<TextMeshProUGUI>().text = score.ToString();
 
             if(btnPause.GetComponent<PressBtn>().isPressed){

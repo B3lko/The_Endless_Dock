@@ -19,6 +19,7 @@ public class PlayerMove : MonoBehaviour{
     [SerializeField] private float jumpForceInitial;
     [SerializeField] private GameObject model;
     [SerializeField] private GameObject gameController;
+    [SerializeField] private AudioSource coinSound;
     private float speedTween = 0.25f;
     private float fallSpeed;
     private float speed = 0;
@@ -160,6 +161,7 @@ public class PlayerMove : MonoBehaviour{
             gameController.GetComponent<GameController>().SetTextCoin();
             other.GetComponent<CoinController>().SetState();
             gameController.GetComponent<GameController>().EmitParticle(new Vector3(other.transform.position.x,other.transform.position.y,other.transform.position.z));
+            coinSound.Play();
         }
     }
 }
