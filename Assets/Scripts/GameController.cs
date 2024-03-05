@@ -264,6 +264,8 @@ public class GameController : MonoBehaviour
     
     void GenerateObstaculos(){
 
+        GameObject aux = new GameObject();
+
         for(int i = 0; i < 3; i++){
             isLarge.Add(false);
         }
@@ -303,10 +305,10 @@ public class GameController : MonoBehaviour
             }
             
             if(k == 0){
-                obstacles.Add(Instantiate(new GameObject(), new Vector3(0, 0, 50f), transform.rotation));
+                obstacles.Add(Instantiate(aux, new Vector3(0, 0, 50f), transform.rotation));
             }
             else{
-                obstacles.Add(Instantiate(new GameObject(), new Vector3(0, 0, obstacles[k - 1].transform.position.z + pref_separation), transform.rotation));
+                obstacles.Add(Instantiate(aux, new Vector3(0, 0, obstacles[k - 1].transform.position.z + pref_separation), transform.rotation));
             }
 
             cord2 = obstacles[k].transform.position.z;
