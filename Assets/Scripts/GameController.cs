@@ -109,7 +109,7 @@ public class GameController : MonoBehaviour
             typeShip = ship_2;
         }
 
-        ship = Instantiate(typeShip, new Vector3(posShipX,-5,player.transform.position.z + 2000), transform.rotation);
+        ship = Instantiate(typeShip, new Vector3(posShipX,-6,player.transform.position.z + 2000), transform.rotation);
         ship.transform.rotation = Quaternion.Euler(0,180,0);
         ship.transform.DOMoveZ(player.transform.position.z,15f);
         ship.transform.parent = map.transform;
