@@ -40,7 +40,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject uiScore;
     [SerializeField] private GameObject ship_1;
     [SerializeField] private GameObject ship_2;
+    [SerializeField] private GameObject map;
     [SerializeField] private AudioSource music;
+    [SerializeField] Material materialConShader;
     public ParticleSystem particles_coin;
     private GameObject ship = null;
     private float coinsGrab = 0;
@@ -73,6 +75,9 @@ public class GameController : MonoBehaviour
         GenerateShip();
         ship_1.transform.localScale = new Vector3(5,5,5);
         ship_2.transform.localScale = new Vector3(5,5,5);
+
+        //prefab_dock.GetComponent<Renderer>().material = materialConShader;
+
     }
     public void SetTextCoin(){
         coinsGrab += 1;
@@ -105,9 +110,10 @@ public class GameController : MonoBehaviour
             typeShip = ship_2;
         }
 
-        ship = Instantiate(typeShip, new Vector3(posShipX,-4,player.transform.position.z + 2000), transform.rotation);
+        ship = Instantiate(typeShip, new Vector3(posShipX,-5,player.transform.position.z + 2000), transform.rotation);
         ship.transform.rotation = Quaternion.Euler(0,180,0);
         ship.transform.DOMoveZ(player.transform.position.z,15f);
+        ship.transform.parent = map.transform;
     }
     void GenerateIsland(){
 
@@ -132,7 +138,7 @@ public class GameController : MonoBehaviour
         leftIsland.Add(Instantiate(aux, new Vector3(-100,0,100), transform.rotation));
         rightIsland.Add(Instantiate(aux2, new Vector3(100,0,100), transform.rotation));
 
-        for(int i = 1; i < 6; i++){
+        for(int i = 1; i < 3; i++){
 
             switch(Random.Range(0, 3)){
                 case 0: aux = prefab_island_1;break;
@@ -150,13 +156,16 @@ public class GameController : MonoBehaviour
 
             leftIsland.Add( Instantiate(aux, new Vector3(-100,0,leftIsland[i-1].transform.position.z + 150), transform.rotation) );
             rightIsland.Add( Instantiate(aux2, new Vector3(100,0,rightIsland[i-1].transform.position.z + 150), transform.rotation) );
+            leftIsland[i].transform.parent = map.transform;
+            rightIsland[i].transform.parent = map.transform;
         }
     }
 
     void GenerateDocks(){
         docks.Add( Instantiate(prefab_dock, new Vector3(0,-3,13), transform.rotation) );
-        for(int i = 1; i < 13; i++){
+        for(int i = 1; i < 5; i++){
             docks.Add( Instantiate(prefab_dock, new Vector3(0,-3,docks[i-1].transform.position.z + 32), transform.rotation) );
+            //docks[i].GetComponent<MeshRenderer>().material = materialConShader;
         }
     }
 
@@ -172,7 +181,7 @@ public class GameController : MonoBehaviour
 
     void GenerateSeas(){
         seas.Add( Instantiate(prefab_sea, new Vector3(0,-4,70), transform.rotation) );
-        for(int i = 1; i < 5; i++){
+        for(int i = 1; i < 2; i++){
             seas.Add( Instantiate(prefab_sea, new Vector3(0,-4,seas[i-1].transform.position.z + 153), transform.rotation) );
         }
     }
@@ -254,6 +263,7 @@ public class GameController : MonoBehaviour
     public void EmitParticle(Vector3 posParticles){
         particles_coin.transform.position = posParticles;
         particles_coin.Play();
+        particles_coin.transform.DOMoveY(particles_coin.transform.position.y + 2f,0.25f);
     }
     
     void GenerateObstaculos(){
