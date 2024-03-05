@@ -16,7 +16,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2450
+  m_CustomRenderQueue: 1950
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -27,10 +27,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: c33cf37a22f010e4cb6a2c2279ee2896, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_511dc67b28a341c9ba764820e5a97b7c_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: c33cf37a22f010e4cb6a2c2279ee2896, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BUILTIN_QueueControl: 1
-    - _BUILTIN_QueueOffset: 50
+    - _BUILTIN_QueueControl: 0
+    - _BUILTIN_QueueOffset: -50
     - _Float: 0.0005
     - _Glossiness: 0
     m_Colors: []

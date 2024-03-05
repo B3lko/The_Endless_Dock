@@ -188,7 +188,7 @@ public class GameController : MonoBehaviour
 
     void GenerateCoins(){
         coins.Clear();
-        coins.Add( Instantiate(coin, new Vector3(0,1,player.transform.position.z + 50 + Random.Range(-10, 11)), coin.transform.rotation) );
+        coins.Add( Instantiate(coin, new Vector3(0,1,player.transform.position.z + 100 + Random.Range(-10, 11)), coin.transform.rotation) );
         for(int i = 1; i < Random.Range(5, 11); i++){
             float posCoinX;
             switch(Random.Range(0, 3)){

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour{
     [SerializeField] private Transform player;
-    float posY = 5f;
-    //float posY = 3f;
+    //float posY = 5f;
+    float posY = 4f;
     float posZ = -6f;
     //float posZ = -3f;
     void Update(){
