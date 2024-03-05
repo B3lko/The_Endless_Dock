@@ -14,9 +14,7 @@ public class PlayerMove : MonoBehaviour{
     [SerializeField] private Transform middle;
     [SerializeField] private Transform right;
     [SerializeField] private float gravity;
-    [SerializeField] private float gravityInitial;
     [SerializeField] private float jumpForce;
-    [SerializeField] private float jumpForceInitial;
     [SerializeField] private GameObject model;
     [SerializeField] private GameObject gameController;
     [SerializeField] private AudioSource coinSound;
@@ -31,8 +29,6 @@ public class PlayerMove : MonoBehaviour{
     void Awake(){  
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        jumpForceInitial = jumpForce;
-        gravityInitial = gravity;
         transform.rotation = Quaternion.Euler(0,180,0);
     }
 
@@ -160,7 +156,7 @@ public class PlayerMove : MonoBehaviour{
         if(other.GetComponent<Collider>().gameObject.tag == "Coin"){
             gameController.GetComponent<GameController>().SetTextCoin();
             other.GetComponent<CoinController>().SetState();
-            gameController.GetComponent<GameController>().EmitParticle(new Vector3(other.transform.position.x,other.transform.position.y,other.transform.position.z));
+            gameController.GetComponent<GameController>().EmitParticle(other.transform.position);
             coinSound.Play();
         }
     }

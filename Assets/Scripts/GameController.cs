@@ -53,6 +53,8 @@ public class GameController : MonoBehaviour
     private float speed_increase = 0.025f;
     private int score = 0;
     int posZ_dock = 32;
+    private float pref_separation = 150;
+    private float pref_separation_island = 100;
     bool isPause = true;
     bool isStart = true;
     List<GameObject> docks = new List<GameObject>();
@@ -75,9 +77,6 @@ public class GameController : MonoBehaviour
         GenerateShip();
         ship_1.transform.localScale = new Vector3(5,5,5);
         ship_2.transform.localScale = new Vector3(5,5,5);
-
-        //prefab_dock.GetComponent<Renderer>().material = materialConShader;
-
     }
     public void SetTextCoin(){
         coinsGrab += 1;
@@ -135,8 +134,8 @@ public class GameController : MonoBehaviour
             default: aux2 = prefab_island_1;break;
         }
         
-        leftIsland.Add(Instantiate(aux, new Vector3(-100,0,100), transform.rotation));
-        rightIsland.Add(Instantiate(aux2, new Vector3(100,0,100), transform.rotation));
+        leftIsland.Add(Instantiate(aux, new Vector3(-pref_separation_island,0,pref_separation_island), transform.rotation));
+        rightIsland.Add(Instantiate(aux2, new Vector3(pref_separation_island,0,pref_separation_island), transform.rotation));
 
         for(int i = 1; i < 3; i++){
 
@@ -154,18 +153,17 @@ public class GameController : MonoBehaviour
                 default: aux2 = prefab_island_1;break;
             }
 
-            leftIsland.Add( Instantiate(aux, new Vector3(-100,0,leftIsland[i-1].transform.position.z + 150), transform.rotation) );
-            rightIsland.Add( Instantiate(aux2, new Vector3(100,0,rightIsland[i-1].transform.position.z + 150), transform.rotation) );
+            leftIsland.Add( Instantiate(aux, new Vector3(-pref_separation_island,0,leftIsland[i-1].transform.position.z + pref_separation), transform.rotation) );
+            rightIsland.Add( Instantiate(aux2, new Vector3(pref_separation_island,0,rightIsland[i-1].transform.position.z + pref_separation), transform.rotation) );
             leftIsland[i].transform.parent = map.transform;
             rightIsland[i].transform.parent = map.transform;
         }
     }
 
     void GenerateDocks(){
-        docks.Add( Instantiate(prefab_dock, new Vector3(0,-3,13), transform.rotation) );
+        docks.Add( Instantiate(prefab_dock, new Vector3(0,-3,13), transform.rotation));
         for(int i = 1; i < 5; i++){
             docks.Add( Instantiate(prefab_dock, new Vector3(0,-3,docks[i-1].transform.position.z + 32), transform.rotation) );
-            //docks[i].GetComponent<MeshRenderer>().material = materialConShader;
         }
     }
 
@@ -173,22 +171,20 @@ public class GameController : MonoBehaviour
         isPause = true;
         lost.transform.localScale = Vector3.zero;
         btnPause.transform.DOScale(Vector3.zero,0.5f);
-        camera.transform.DOLocalRotate(new Vector3(30,0,0),0.5f , RotateMode.Fast).OnComplete(() => {
-            lost.SetActive(true);
-            lost.transform.DOScale(Vector3.one,0.5f).SetDelay(1f);
-        });
+        lost.SetActive(true);
+        lost.transform.DOScale(Vector3.one,0.5f).SetDelay(1f);
     }
 
     void GenerateSeas(){
-        seas.Add( Instantiate(prefab_sea, new Vector3(0,-4,70), transform.rotation) );
+        seas.Add(Instantiate(prefab_sea, new Vector3(0,-4,70), transform.rotation) );
         for(int i = 1; i < 2; i++){
-            seas.Add( Instantiate(prefab_sea, new Vector3(0,-4,seas[i-1].transform.position.z + 153), transform.rotation) );
+            seas.Add(Instantiate(prefab_sea, new Vector3(0,-4,seas[i-1].transform.position.z + pref_separation), transform.rotation) );
         }
     }
 
     void GenerateCoins(){
         coins.Clear();
-        coins.Add( Instantiate(coin, new Vector3(0,1,player.transform.position.z + 100 + Random.Range(-10, 11)), coin.transform.rotation) );
+        coins.Add(Instantiate(coin, new Vector3(0,1,player.transform.position.z + 100 + Random.Range(-10, 11)), coin.transform.rotation) );
         for(int i = 1; i < Random.Range(5, 11); i++){
             float posCoinX;
             switch(Random.Range(0, 3)){
@@ -228,7 +224,7 @@ public class GameController : MonoBehaviour
             for(int i = 0; i < seas.Count - 1; i++){
                 seas[i] = seas[i + 1]; 
             }
-            aux.transform.position = new Vector3(0, -4, seas[seas.Count -1].transform.position.z + 153);
+            aux.transform.position = new Vector3(0, -4, seas[seas.Count -1].transform.position.z + pref_separation);
             seas[seas.Count -1] = aux;
         }
     }
@@ -241,8 +237,8 @@ public class GameController : MonoBehaviour
                 leftIsland[i] = leftIsland[i + 1]; 
                 rightIsland[i] = rightIsland[i + 1]; 
             }
-            aux.transform.position = new Vector3(-100, 0, leftIsland[leftIsland.Count -1].transform.position.z + 150);
-            aux2.transform.position = new Vector3(100, 0, rightIsland[rightIsland.Count -1].transform.position.z + 150);
+            aux.transform.position = new Vector3(-pref_separation_island, 0, leftIsland[leftIsland.Count -1].transform.position.z + pref_separation);
+            aux2.transform.position = new Vector3(pref_separation_island, 0, rightIsland[rightIsland.Count -1].transform.position.z + pref_separation);
 
             leftIsland[leftIsland.Count -1] = aux;
             rightIsland[rightIsland.Count -1] = aux2;
@@ -250,12 +246,12 @@ public class GameController : MonoBehaviour
     }
     
     void UpdateObstacles(){
-        if(obstacles[0].transform.position.z + 150 < player.transform.position.z){
+        if(obstacles[0].transform.position.z + pref_separation < player.transform.position.z){
             GameObject aux = obstacles[0];
             for(int i = 0; i < obstacles.Count - 1; i++){
                 obstacles[i] = obstacles[i + 1]; 
             }
-            aux.transform.position = new Vector3(0, 0, obstacles[obstacles.Count -1].transform.position.z + 150);
+            aux.transform.position = new Vector3(0, 0, obstacles[obstacles.Count -1].transform.position.z + pref_separation);
             obstacles[obstacles.Count -1] = aux;
         }
     }
@@ -263,7 +259,7 @@ public class GameController : MonoBehaviour
     public void EmitParticle(Vector3 posParticles){
         particles_coin.transform.position = posParticles;
         particles_coin.Play();
-        particles_coin.transform.DOMoveY(particles_coin.transform.position.y + 2f,0.25f);
+        particles_coin.transform.DOMoveY(particles_coin.transform.position.y + 2f, 0.25f);
     }
     
     void GenerateObstaculos(){
@@ -310,7 +306,7 @@ public class GameController : MonoBehaviour
                 obstacles.Add(Instantiate(new GameObject(), new Vector3(0, 0, 50f), transform.rotation));
             }
             else{
-                obstacles.Add(Instantiate(new GameObject(), new Vector3(0, 0, obstacles[k - 1].transform.position.z + 150), transform.rotation));
+                obstacles.Add(Instantiate(new GameObject(), new Vector3(0, 0, obstacles[k - 1].transform.position.z + pref_separation), transform.rotation));
             }
 
             cord2 = obstacles[k].transform.position.z;
